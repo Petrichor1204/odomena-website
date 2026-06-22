@@ -1,26 +1,54 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #fff8f3;
+  --foreground: #4a2c1a;
+  --peach: #ffd4b8;
+  --peach-light: #fff0e6;
+  --peach-dark: #f4a574;
+  --brown: #5c3d2e;
+  --brown-light: #8b5e3c;
+  --brown-dark: #3e2720;
+  --sky: #a8d8ea;
+  --sky-light: #d6eef7;
+  --sky-dark: #6db8d4;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
+  --color-peach: var(--peach);
+  --color-peach-light: var(--peach-light);
+  --color-peach-dark: var(--peach-dark);
+  --color-brown: var(--brown);
+  --color-brown-light: var(--brown-light);
+  --color-brown-dark: var(--brown-dark);
+  --color-sky: var(--sky);
+  --color-sky-light: var(--sky-light);
+  --color-sky-dark: var(--sky-dark);
   --font-sans: var(--font-geist-sans);
+  --font-serif: var(--font-cormorant), Georgia, serif;
   --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-geist-sans), system-ui, sans-serif;
+}
+
+.btn-primary {
+  @apply rounded-lg bg-brown px-4 py-2.5 text-sm font-medium text-peach-light transition hover:bg-brown-dark;
+}
+
+.btn-primary:disabled {
+  @apply opacity-60;
+}
+
+.input-field {
+  @apply w-full rounded-lg border border-peach-dark/40 bg-white px-3 py-2 text-sm text-brown outline-none focus:border-sky-dark focus:ring-2 focus:ring-sky/50;
+}
+
+.card {
+  @apply rounded-xl border border-peach-dark/30 bg-white shadow-sm;
 }

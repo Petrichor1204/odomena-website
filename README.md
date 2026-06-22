@@ -1,36 +1,69 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Atelier — Independent Clothing Store
 
-## Getting Started
+A minimal clothing storefront for a small independent seller. Built with Next.js, Supabase, Cloudinary, and Tailwind CSS.
 
-First, run the development server:
+## Features
+
+- **Public storefront** — browse items with photos, name, price, and description
+- **Request to Buy** — customers submit their name and contact info for any item
+- **Admin panel** — password-protected page to add items, delete sold items, and view purchase requests
+- **Image uploads** — photos stored on Cloudinary
+
+## Setup
+
+### 1. Supabase
+
+1. Create a project at [supabase.com](https://supabase.com)
+2. Open the SQL Editor and run the contents of `supabase/schema.sql`
+3. Copy your project URL, anon key, and service role key from **Settings → API**
+
+### 2. Cloudinary
+
+1. Create an account at [cloudinary.com](https://cloudinary.com)
+2. Copy your **Cloud name**, **API Key**, and **API Secret** from the dashboard
+
+### 3. Environment variables
+
+Copy `.env.example` to `.env.local` and fill in the values:
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+cp .env.example .env.local
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Generate a random session token for `ADMIN_SESSION_TOKEN` (e.g. `openssl rand -hex 32`).
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### 4. Run locally
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```bash
+npm install
+npm run dev
+```
 
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Open [http://localhost:3000](http://localhost:3000) for the storefront and [http://localhost:3000/admin](http://localhost:3000/admin) for the admin panel.
 
 ## Deploy on Vercel
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+1. Push this repo to GitHub
+2. Import the project at [vercel.com/new](https://vercel.com/new)
+3. Add all environment variables from `.env.example` in the Vercel project settings
+4. Deploy
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Vercel will detect Next.js automatically. No extra config needed.
+
+## Admin access
+
+Go to `/admin` and sign in with the password you set in `ADMIN_PASSWORD`. The session lasts 7 days via an httpOnly cookie.
+
+## Project structure
+
+```
+src/
+  app/
+    page.tsx              # Storefront
+    admin/page.tsx        # Admin panel
+    api/                  # API routes
+  components/             # UI components
+  lib/                    # Supabase, Cloudinary, auth helpers
+supabase/
+  schema.sql              # Database schema
+```

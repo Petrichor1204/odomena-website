@@ -1,65 +1,76 @@
-import Image from "next/image";
+import { Header } from "@/components/Header";
+import { ProductGrid } from "@/components/ProductGrid";
+import { createSupabaseAdmin } from "@/lib/supabase";
+import type { Product } from "@/types";
 
-export default function Home() {
+async function getProducts(): Promise<Product[]> {
+  try {
+    const supabase = createSupabaseAdmin();
+    const { data, error } = await supabase
+      .from("products")
+      .select("*")
+      .order("created_at", { ascending: false });
+
+    if (error) {
+      console.error("Failed to fetch products:", error.message);
+      return [];
+    }
+
+    return data ?? [];
+  } catch {
+    return [];
+  }
+}
+
+export default async function HomePage() {
+  const products = await getProducts();
+
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
+    <>
+      <Header />
+      <main className="mx-auto max-w-6xl flex-1 px-6 py-10">
+        <section className="relative mb-12 overflow-hidden rounded-2xl bg-gradient-to-br from-peach via-peach-light to-sky-light px-8 py-12">
+          <div className="absolute -right-8 -top-8 h-32 w-32 rounded-full bg-sky/30 blur-2xl" />
+          <div className="absolute -bottom-6 -left-6 h-24 w-24 rounded-full bg-peach-dark/40 blur-xl" />
+          <div className="relative">
+            <p className="text-xs font-semibold uppercase tracking-[0.25em] text-brown-light">
+              Handpicked textiles
+            </p>
+            <h1 className="mt-3 font-serif text-4xl font-semibold leading-tight text-brown md:text-5xl">
+              Odomena African Fabrics
+            </h1>
+            <p className="mt-4 max-w-xl text-base leading-relaxed text-brown/80">
+              Vibrant prints, rich textures, and one-of-a-kind pieces. Browse our
+              collection and request to buy — we&apos;ll reach out to complete your
+              order.
+            </p>
+            <div className="mt-6 flex flex-wrap gap-3">
+              <span className="rounded-full bg-brown px-4 py-1.5 text-xs font-medium text-peach-light">
+                Ankara & Wax Print
+              </span>
+              <span className="rounded-full bg-sky px-4 py-1.5 text-xs font-medium text-brown-dark">
+                Kente & More
+              </span>
+              <span className="rounded-full border border-brown/20 bg-white/60 px-4 py-1.5 text-xs font-medium text-brown">
+                Custom Orders Welcome
+              </span>
+            </div>
+          </div>
+        </section>
+
+        <div className="mb-6 flex items-center gap-3">
+          <h2 className="font-serif text-2xl font-semibold text-brown">Shop Collection</h2>
+          <div className="h-px flex-1 bg-gradient-to-r from-peach-dark to-sky/50" />
         </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
+
+        <ProductGrid products={products} />
       </main>
-    </div>
+      <footer className="mt-auto border-t border-peach-dark/30 bg-brown py-8 text-center">
+        <p className="font-serif text-lg text-peach-light">Odomena African Fabrics</p>
+        <p className="mt-1 text-xs text-sky-light/80">
+          © {new Date().getFullYear()} All rights reserved
+        </p>
+      </footer>
+    </>
   );
 }
