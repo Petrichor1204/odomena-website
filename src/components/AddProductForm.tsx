@@ -61,7 +61,7 @@ export function AddProductForm({ onAdded }: AddProductFormProps) {
 
         <div>
           <label htmlFor="price" className="mb-1.5 block text-sm font-medium text-brown">
-            Price (USD)
+            Price (cedis)
           </label>
           <input
             id="price"

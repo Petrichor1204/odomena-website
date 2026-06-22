@@ -2,15 +2,9 @@
 
 import Image from "next/image";
 import { useState } from "react";
+import { formatPrice } from "@/lib/format";
 import type { Product } from "@/types";
 import { RequestModal } from "./RequestModal";
-
-function formatPrice(price: number) {
-  return new Intl.NumberFormat("en-US", {
-    style: "currency",
-    currency: "USD",
-  }).format(price);
-}
 
 export function ProductCard({ product }: { product: Product }) {
   const [showRequest, setShowRequest] = useState(false);

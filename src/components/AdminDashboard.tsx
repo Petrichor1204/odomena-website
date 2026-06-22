@@ -2,15 +2,9 @@
 
 import Image from "next/image";
 import { useCallback, useEffect, useState } from "react";
+import { formatPrice } from "@/lib/format";
 import type { Product, PurchaseRequest } from "@/types";
 import { AddProductForm } from "./AddProductForm";
-
-function formatPrice(price: number) {
-  return new Intl.NumberFormat("en-US", {
-    style: "currency",
-    currency: "USD",
-  }).format(price);
-}
 
 function formatDate(date: string) {
   return new Intl.DateTimeFormat("en-US", {
