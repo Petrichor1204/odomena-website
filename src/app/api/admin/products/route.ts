@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+import { revalidatePath } from "next/cache";
 import { requireAdmin } from "@/lib/auth";
 import { deleteImage, uploadImage } from "@/lib/cloudinary";
 import { createSupabaseAdmin } from "@/lib/supabase";
@@ -48,6 +49,8 @@ export async function POST(request: NextRequest) {
       await deleteImage(uploaded.public_id);
       return NextResponse.json({ error: error.message }, { status: 500 });
     }
+
+    revalidatePath("/");
 
     return NextResponse.json(data, { status: 201 });
   } catch (err) {

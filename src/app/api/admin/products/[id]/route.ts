@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+import { revalidatePath } from "next/cache";
 import { requireAdmin } from "@/lib/auth";
 import { deleteImage, publicIdFromUrl } from "@/lib/cloudinary";
 import { createSupabaseAdmin } from "@/lib/supabase";
@@ -35,6 +36,8 @@ export async function DELETE(_request: NextRequest, context: RouteContext) {
   if (publicId) {
     await deleteImage(publicId).catch(() => undefined);
   }
+
+  revalidatePath("/");
 
   return NextResponse.json({ success: true });
 }

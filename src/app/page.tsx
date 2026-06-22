@@ -1,11 +1,13 @@
 import { Header } from "@/components/Header";
 import { ProductGrid } from "@/components/ProductGrid";
-import { createSupabaseAdmin } from "@/lib/supabase";
+import { createSupabaseClient } from "@/lib/supabase";
 import type { Product } from "@/types";
+
+export const dynamic = "force-dynamic";
 
 async function getProducts(): Promise<Product[]> {
   try {
-    const supabase = createSupabaseAdmin();
+    const supabase = createSupabaseClient();
     const { data, error } = await supabase
       .from("products")
       .select("*")
